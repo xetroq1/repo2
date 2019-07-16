@@ -5,6 +5,7 @@ import LoginView from './LoginView';
 import RegisterView from './RegisterView';
 import BookComponent from './BookComponent';
 import UserDashboard from './UserDashboard';
+import Page from './Page';
 
 export default class Routes extends Component {
     render() {
@@ -19,6 +20,7 @@ export default class Routes extends Component {
                 <Scene key="login" component={LoginView} title="Login"/>
                 <Scene key="register" component={RegisterView} title="Register"/>
                 <Scene key="book" component={BookComponent} title="Book"/>
+                <Scene key="page" component={Page} title="Page"/>
                 <Scene key="user_dashboard" component={UserDashboard} title="Book"/>
               </Stack>
             </Router>

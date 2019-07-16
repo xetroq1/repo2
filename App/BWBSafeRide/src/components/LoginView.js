@@ -113,6 +113,9 @@ static navigationOptions = {
         <TouchableHighlight  onPress={()=>Actions.book()}>
             <Text style={styles.textStyles1}>Skip to Booking</Text>
         </TouchableHighlight>
+        <TouchableHighlight  onPress={()=>Actions.page({asd:'aaaa'})}>
+            <Text style={styles.textStyles1}>Page Dashboard</Text>
+        </TouchableHighlight>
         <TouchableHighlight  onPress={()=>Actions.user_dashboard()}>
             <Text style={styles.textStyles1}>Skip to Dashboard</Text>
         </TouchableHighlight>
