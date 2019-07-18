@@ -15,12 +15,6 @@ import backgroundImg from '../assets/images/mobile-bg.jpg';
 
 export default class RegisterView extends Component {
 
-  // constructor(){
-  //
-  //   super();
-  //   // alert();
-  // }
-
     goBack() {
         Actions.pop()
     }

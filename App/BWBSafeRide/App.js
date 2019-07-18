@@ -8,9 +8,11 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, ScrollView, ImageBackground} from 'react-native';
-// import LoginView from './src/components/LoginView';
-// import RegisterView from './src/components/RegisterView';
-// import BookComponent from './src/components/BookComponent';
+import { Container, Content, StyleProvider } from 'native-base';
+import getTheme from './native-base-theme/components';
+import material from './native-base-theme/variables/material';
+import LoginView from './src/components/LoginView';
+import RegisterView from './src/components/RegisterView';
 import Routes from './src/components/Routes';
 
 const instructions = Platform.select({
@@ -24,7 +26,9 @@ type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
-        <Routes />
+        <StyleProvider style={getTheme(material)}>
+            <Routes />
+        </StyleProvider>
     );
   }
 }

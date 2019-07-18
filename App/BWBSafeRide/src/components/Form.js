@@ -1,21 +1,121 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, AsyncStorage, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import { SegmentedControls } from 'react-native-radio-buttons';
+import ValidationComponent from 'react-native-form-validator';
+import Storage from 'react-native-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
-export default class Form extends Component {
+export default class Form extends ValidationComponent {
 
     constructor(props){
         super(props);
         this.state = {
-            username:'',
-            password: ''
+            firstname: '',
+            lastname: '',
+            username: '',
+            password: '',
+            confirmpass: '',
+            email: '',
+            phone: '',
+            city: '',
+            zip: '',
+            selectedOption: 'Driver'
         }
     }
 
+    componentDidMount(){
+        this.getData();
+    }
+
+    login() {
+        Actions.login();
+    }
+
+    async getData(responseJson) {
+      try {
+        let userData = await AsyncStorage.getItem("userData");
+        let data = JSON.parse(userData);
+        console.log(data);
+        if(data.login_id !== null){
+            Actions.dashboard();
+        }
+      } catch (error) {
+        console.log("Something went wrong", error);
+      }
+    }
+
     onClickListener = (viewId) => {
-      Alert.alert("Alert", "Button pressed: "+viewId);
+        const { firstname }  = this.state;
+        const { lastname }  = this.state;
+        const { username }  = this.state;
+        const { password }  = this.state;
+        const { email }  = this.state;
+        const { phone }  = this.state;
+        const { city }  = this.state;
+        const { zip }  = this.state;
+        const { confirmpass }  = this.state;
+        const { selectedOption } = this.state;
+
+        // Call ValidationComponent validate method
+          this.validate({
+            firstname: {required: true},
+            lastname: {required: true},
+            username: {required: true},
+            password: {minlength:6, required: true},
+            email: {email: true, required: true},
+            phone: {required: true},
+            city: {required: true},
+            zip: {numbers: true, required: true},
+            selectedOption: {required: true}
+          });
+
+      if(viewId == "RegisterSubmit"){
+          if(this.isFormValid()){
+              fetch('http://web2.proweaverlinks.com/tech/bwbsafe/backend_web_api/api/register', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+
+              username: username,
+              password: password,
+              firstname: firstname,
+              lastname: lastname,
+              email: email,
+              phone: phone,
+              city: city,
+              zip: zip,
+              confirmpass: confirmpass,
+              user_type: selectedOption
+
+            })
+
+          }).then((response) => response.json())
+            .then((responseJson) => {
+
+             if(responseJson.response === 'success')
+              {
+                  Alert.alert('Successfully registered.');
+                  this.login();
+
+              }
+              else{
+
+                Alert.alert(JSON.stringify(responseJson.msg));
+              }
+
+            }).catch((error) => {
+              console.error(error);
+            });
+
+        }else{
+            Alert.alert(this.getErrorMessages());
+        }
+      }
     }
 
     saveData = async() => {
@@ -106,21 +206,22 @@ export default class Form extends Component {
                     optionStyle={{fontFamily: 'AvenirNext-Medium'}}
                     optionContainerStyle={{flex: 1}}
                   />
-                  {/* }<Text style={styles.textStyle}>Selected option: {this.state.selectedOption || 'none'}</Text> */}
+                  <Text style={styles.textStyle}>You are a {this.state.selectedOption || 'none'}</Text>
               </View>
 
                 <View style={styles.inputWrap}>
-                    <TextInput style={styles.inputBox2} placeholder="First Name" />
-                    <TextInput style={styles.inputBox2} placeholder="Last Name" />
+                    <TextInput style={styles.inputBox2} placeholder="First Name" onChangeText={(firstname) => this.setState({firstname})} />
+                    <TextInput style={styles.inputBox2} placeholder="Last Name" onChangeText={(lastname) => this.setState({lastname})} />
                 </View>
-                <TextInput style={styles.inputBox} placeholder="Phone Number" keyboardType="phone-pad" />
-                <TextInput style={styles.inputBox} placeholder="City" />
-                <TextInput style={styles.inputBox} placeholder="ZIP Code" keyboardType="number-pad" />
+                <View style={styles.inputWrap}>
+                    <TextInput style={styles.inputBox2} placeholder="Email" keyboardType="email-address" onChangeText={(email) => this.setState({email})} />
+                    <TextInput style={styles.inputBox2} placeholder="Phone Number" keyboardType="phone-pad" onChangeText={(phone) => this.setState({phone})} />
+                </View>
+                <TextInput style={styles.inputBox} placeholder="City" onChangeText={(city) => this.setState({city})} />
+                <TextInput style={styles.inputBox} placeholder="ZIP Code" keyboardType="number-pad" onChangeText={(zip) => this.setState({zip})} />
                 <TextInput style={styles.inputBox}
                 onChangeText={(username) => this.setState({username})}
-                underlineColorAndroid='rgba(0,0,0,0)'
                 placeholder="Username"
-                selectionColor="#fff"
                 keyboardType="default"
                 onSubmitEditing={()=> this.password.focus()}/>
 
@@ -132,10 +233,11 @@ export default class Form extends Component {
                 ref={(input) => this.password = input}
                 />
 
-                <TextInput style={styles.inputBox} placeholder="Confirm Password" />
+                <TextInput style={styles.inputBox} placeholder="Confirm Password" onChangeText={(confirmpass) => this.setState({confirmpass})} secureTextEntry={true} />
+                <Text style={styles.textStyle2}>All fields are required.</Text>
 
                 <TouchableOpacity style={styles.button}>
-                    <Text style={styles.buttonText} onPress={() => this.onClickListener("REGISTER SUBMIT")}>{this.props.type}</Text>
+                    <Text style={styles.buttonText} onPress={() => this.onClickListener("RegisterSubmit")}>{this.props.type}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -149,7 +251,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textStyle: {
-        color: '#e3e3e3',
+        color: '#d3a04c',
+        textAlign: 'center',
+        marginTop: 20,
+    },
+    textStyle2: {
+        color: '#d60000',
+        textAlign: 'left',
+        marginTop: 20,
+        marginBottom: 30
     },
     inputWrap: {
         flexDirection: 'row'

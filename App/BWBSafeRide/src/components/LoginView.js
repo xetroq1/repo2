@@ -4,14 +4,16 @@ import {
   Text,
   View,
   TextInput,
-  Button,
   TouchableHighlight,
   Image,
   Alert,
+  Button,
   ImageBackground
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
+import Storage from 'react-native-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import usernameIcon from '../assets/images/icons8-username-filled-50.png';
 import passwordIcon from '../assets/images/icons8-lock-filled-50.png';
@@ -19,28 +21,27 @@ import companyLogo from '../assets/images/main_logo.png';
 import backgroundImg from '../assets/images/mobile-bg.jpg';
 
 export default class LoginView extends Component {
-static navigationOptions = {
-  header:null
-}
+
   constructor(props) {
     super(props);
-    state = {
-      username   : '',
-      password: '',
+    this.state = {
+      username: '',
+      password: ''
     }
+  }
+
+  componentDidMount(){
+     this.getData();
   }
 
   register() {
       Actions.register();
   }
-  // book() {
-  //     Actions.book();
-  // }
 
   onClickListener = (viewId) => {
       const { username }  = this.state;
       const { password }  = this.state;
-    Alert.alert("Alert", "Button pressed: "+viewId);
+    {/*Alert.alert("Alert", "Button pressed: "+viewId);*/}
 
     if(viewId == "LoginSubmit"){
         fetch('http://web2.proweaverlinks.com/tech/bwbsafe/backend_web_api/api/login', {
@@ -59,20 +60,39 @@ static navigationOptions = {
     }).then((response) => response.json())
       .then((responseJson) => {
 
-       if(responseJson === 'Data Matched')
+       if(responseJson.response === 'success')
         {
-            Alert.alert('Data matched');
-
+            this.setData(responseJson.data);
+            Actions.profile();
         }
         else{
-
-          Alert.alert(JSON.stringify(responseJson));
+          Alert.alert(JSON.stringify(responseJson.msg));
         }
 
       }).catch((error) => {
         console.error(error);
       });
 
+    }
+  }
+
+  async setData(responseJson) {
+    try {
+       await AsyncStorage.setItem('userData', JSON.stringify(responseJson));
+    } catch (error) {
+      console.log("Something went wrong", error);
+    }
+  }
+  async getData(responseJson) {
+    try {
+      let userData = await AsyncStorage.getItem("userData");
+      let data = JSON.parse(userData);
+      console.log(data);
+      if(data.login_id !== null){
+          Actions.profile();
+      }
+    } catch (error) {
+      console.log("Something went wrong", error);
     }
   }
 
@@ -102,22 +122,12 @@ static navigationOptions = {
           <Text style={styles.loginText}>Login</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
+        {/*}<TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
             <Text style={styles.textStyles}>Forgot your password?</Text>
-        </TouchableHighlight>
+        </TouchableHighlight>*/}
 
-        <TouchableHighlight style={styles.buttonContainer} onPress={()=> Actions.register()}>
+        <TouchableHighlight style={styles.buttonContainer} onPress={this.register}>
             <Text style={styles.textStyles1}>Register</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight  onPress={()=>Actions.book()}>
-            <Text style={styles.textStyles1}>Skip to Booking</Text>
-        </TouchableHighlight>
-        <TouchableHighlight  onPress={()=>Actions.page({asd:'aaaa'})}>
-            <Text style={styles.textStyles1}>Page Dashboard</Text>
-        </TouchableHighlight>
-        <TouchableHighlight  onPress={()=>Actions.user_dashboard()}>
-            <Text style={styles.textStyles1}>Skip to Dashboard</Text>
         </TouchableHighlight>
       </ImageBackground>
     );
