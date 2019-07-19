@@ -25,27 +25,6 @@ export default class Form extends ValidationComponent {
         }
     }
 
-    componentDidMount(){
-        this.getData();
-    }
-
-    login() {
-        Actions.login();
-    }
-
-    async getData(responseJson) {
-      try {
-        let userData = await AsyncStorage.getItem("userData");
-        let data = JSON.parse(userData);
-        console.log(data);
-        if(data.login_id !== null){
-            Actions.dashboard();
-        }
-      } catch (error) {
-        console.log("Something went wrong", error);
-      }
-    }
-
     onClickListener = (viewId) => {
         const { firstname }  = this.state;
         const { lastname }  = this.state;
@@ -116,54 +95,6 @@ export default class Form extends ValidationComponent {
             Alert.alert(this.getErrorMessages());
         }
       }
-    }
-
-    saveData = async() => {
-        const {username,password} = this.state;
-
-        //save data with asyncstorage
-        let loginDetails = {
-            username: username,
-            password: password
-        }
-
-        if(this.props.type !== 'Login')
-        {
-            AsyncStorage.setItem('loginDetails', JSON.stringify(loginDetails));
-
-            Keyboard.dismiss();
-            alert("You successfully registered. Username: " + username + ' password: ' + password);
-            this.login();
-        }
-        else if(this.props.type == 'Login')
-        {
-            try{
-                let loginDetails = await AsyncStorage.getItem('loginDetails');
-                let ld = JSON.parse(loginDetails);
-
-                if (ld.username != null && ld.password != null)
-                {
-                    if (ld.username == username && ld.password == password)
-                    {
-                        alert('Go in!');
-                    }
-                    else
-                    {
-                        alert('Username and Password does not exist!');
-                    }
-                }
-
-            }catch(error)
-            {
-                alert(error);
-            }
-        }
-    }
-
-    showData = async()=>{
-        let loginDetails = await AsyncStorage.getItem('loginDetails');
-        let ld = JSON.parse(loginDetails);
-        alert('username: '+ ld.username + ' ' + 'password: ' + ld.password);
     }
 
     render() {
