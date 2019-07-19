@@ -59,4 +59,4 @@ buck-out/
 /ios/Pods/
 
 # Comment to ignore
-/android/build.gradle
+#/android/build.gradle

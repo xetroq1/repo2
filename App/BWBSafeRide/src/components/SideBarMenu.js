@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, List, ListItem, Text, Left, Right, Button, Body, Icon, Title } from 'native-base';
+import { Container, Header, Content, List, ListItem, Text, Left, Right, Button, Body, Icon, Title, Card, CardItem } from 'native-base';
 export default class SideBarMenu extends Component {
   render() {
     return (
       <Container>
       <Header>
         <Body>
-          <Title>Header</Title>
+          <Title></Title>
         </Body>
         <Right />
         </Header>
         <Content>
           <List>
             <ListItem>
-              <Text>Simon Mignolet</Text>
+              <Text>Profile</Text>
+              <Right>
+               <Icon name="arrow-forward" />
+             </Right>
             </ListItem>
             <ListItem>
-              <Text>Nathaniel Clyne</Text>
+              <Text>Payment</Text>
+              <Right>
+               <Icon name="arrow-forward" />
+             </Right>
             </ListItem>
             <ListItem>
-              <Text>Dejan Lovren</Text>
+              <Text>History</Text>
+              <Right>
+               <Icon name="arrow-forward" />
+             </Right>
             </ListItem>
           </List>
         </Content>
