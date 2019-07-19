@@ -2,9 +2,20 @@ import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 export default class Dashboard extends Component {
+    static navigationOptions = {
+    drawerLabel: 'Dashboard'
+  };
+
     render() {
         return (
             <Container>
+            <Header>
+             <Left style={{ flexDirection: 'row' }}>
+              <Icon onPress={() => this.props.navigation.openDrawer()} name="md-menu" style={{ color: '#d3a04c', marginRight: 15 }} />
+             </Left>
+             <Right>
+             </Right>
+            </Header>
                 <Content>
                     <Text>
                     Dashboard/Home Screen content goes here ...
