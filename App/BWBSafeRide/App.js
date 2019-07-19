@@ -26,9 +26,9 @@ type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
-        <StyleProvider style={getTheme(material)}>
-            <Routes />
-        </StyleProvider>
+      <StyleProvider style={getTheme(material)}>
+          <Routes />
+      </StyleProvider>
     );
   }
 }

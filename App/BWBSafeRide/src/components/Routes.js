@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Router, Stack, Scene, Drawer, Actions} from 'react-native-router-flux';
+// import { AsyncStorage } from "react-native";
 
 import LoginView from './LoginView';
 import RegisterView from './RegisterView';
@@ -10,6 +11,8 @@ import SideBarMenu from './SideBarMenu';
 export default class Routes extends Component {
 
     componentDidMount(){
+        Actions.profile();;
+    console.log(1);
         this.getData();
         Actions.drawerMenu()
     }
@@ -19,8 +22,11 @@ export default class Routes extends Component {
         let userData = await AsyncStorage.getItem("userData");
         let data = JSON.parse(userData);
         console.log(data);
-        if(data.login_id !== null){
+        if(typeof data.login_id != "null"){
             Actions.profile();
+            console.log(1);
+        }else {
+          console.log(2);
         }
       } catch (error) {
         console.log("Something went wrong", error);
@@ -34,34 +40,34 @@ export default class Routes extends Component {
                 navigationBarStyle={{backgroundColor: '#1c1b22',}}
                 titleStyle={{color: '#d3a04c',}}
             >
-            <Scene>
-                <Stack key="root">
-                    {/* loader or Splash screen here*/}
-                    <Scene key="login" component={LoginView} title="Login"/>
-                    <Scene key="register" component={RegisterView} title="Register"/>
-                    <Scene hideNavBar={true} key="profile" component={Profile} />
-                </Stack>
-                <Drawer
-               hideNavBar
-               key="drawerMenu"
-               contentComponent={SideBarMenu}
-               drawerWidth={250}
-               drawerPosition="left"
-           >
-               <Scene
-                   key="dashboard"
-                   component={Dashboard}
+              <Scene>
+                  <Stack key="root">
+                      {/* loader or Splash screen here*/}
+                      <Scene key="login" component={LoginView} title="Login"/>
+                      <Scene key="register" component={RegisterView} title="Register"/>
+                      <Scene hideNavBar={true} key="profile" component={Profile} />
+                  </Stack>
+                  <Drawer
+                 hideNavBar
+                 key="drawerMenu"
+                 contentComponent={SideBarMenu}
+                 drawerWidth={250}
+                 drawerPosition="left"
+             >
+             <Scene
+             key="login"
+             component={LoginView}
+             />
+                 <Scene
+                     key="dashboard"
+                     component={Dashboard}
 
-               />
+                 />
 
-               <Scene
-                   key="login"
-                   component={LoginView}
-               />
 
-           </Drawer>
-           </Scene>
-            </Router>
+             </Drawer>
+             </Scene>
+          </Router>
         );
     }
 }
