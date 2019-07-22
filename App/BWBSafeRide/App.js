@@ -15,9 +15,11 @@ import LoginView from './src/components/LoginView';
 import RegisterView from './src/components/RegisterView';
 import Dashboard from './src/components/Dashboard';
 import Profile from './src/components/Profile';
+import History from './src/components/History';
+import Payment from './src/components/Payment';
 import Routes from './src/components/Routes';
 import companyLogosm from './src/assets/images/main_logo-sm.png';
-import { createDrawerNavigator,createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation'
+import { createDrawerNavigator,createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -49,6 +51,12 @@ const MyDrawerNavigator = createDrawerNavigator({
     Profile: {
         screen: Profile,
     },
+    History: {
+        screen: History,
+    },
+    Payment: {
+        screen: Payment,
+    }
 },
 {
     contentComponent: DrawerContent,

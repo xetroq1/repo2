@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
-
-export default class Dashboard extends Component {
+export default class Payment extends Component {
     static navigationOptions = {
-    drawerLabel: 'Dashboard',
-    drawerIcon: () => (
-        <Icon type="FontAwesome" name="home" style={{ fontSize: 22 }} />
-    )
-
-  };
+        drawerLabel: 'Payment',
+        drawerIcon: () => (
+            <Icon type="FontAwesome" name="paypal" style={{ fontSize: 19 }} />
+        )
+    };
 
     render() {
         return (
@@ -23,7 +21,7 @@ export default class Dashboard extends Component {
             </Header>
                 <Content>
                     <Text>
-                    Dashboard/Home Screen content goes here ...
+                    Payment content goes here ...
                     </Text>
                 </Content>
                 <Footer>

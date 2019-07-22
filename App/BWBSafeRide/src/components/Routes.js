@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Router, Stack, Scene, Actions} from 'react-native-router-flux';
 import { Container, Content, Header, Left, Body, Icon } from 'native-base';
-import { createDrawerNavigator,createAppContainer } from 'react-navigation'
+import { createDrawerNavigator,createAppContainer } from 'react-navigation';
 
 import LoginView from './LoginView';
 import RegisterView from './RegisterView';
