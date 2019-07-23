@@ -13,7 +13,7 @@ export default class Routes extends Component {
 
     render() {
         return (
-            <Router barButtonIconStyle ={styles.barButtonIconStyle}
+          <Router barButtonIconStyle ={styles.barButtonIconStyle}
                 hideNavBar={false}
                 navigationBarStyle={{backgroundColor: '#1c1b22',}}
                 titleStyle={{color: '#d3a04c',}}
@@ -27,7 +27,7 @@ export default class Routes extends Component {
                 </Stack>
 
            </Scene>
-            </Router>
+          </Router>
         );
     }
 }
