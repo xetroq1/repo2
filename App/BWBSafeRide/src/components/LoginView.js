@@ -87,8 +87,8 @@ export default class LoginView extends Component {
 
   async setData(responseJson) {
     try {
-
-       await AsyncStorage.setItem('userData', JSON.stringify(responseJson));
+        alert(responseJson);
+       await AsyncStorage.setItem('userData', responseJson);
     } catch (error) {
       console.log("Something went wrong", error);
     }

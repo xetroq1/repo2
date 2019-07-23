@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Alert, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 export default class Profile extends Component {
@@ -14,10 +15,22 @@ export default class Profile extends Component {
     }
 
     componentDidMount(){
-
+        this.setUserData();
     }
 
+  setUserData = async () => {
+    if(await AsyncStorage.getItem('userData')){
+      this.setState({
+        userData: await AsyncStorage.getItem('userData'),
+        });
+        alert(this.state.userData);
+    }
+  }
+
     render() {
+        const { userData } = this.state;
+        // console.log(userData);
+        // alert(userData);
         return (
          <Container>
           <Header>
