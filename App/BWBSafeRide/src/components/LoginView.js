@@ -63,7 +63,7 @@ export default class LoginView extends Component {
        if(responseJson.response === 'success')
         {
             this.setData(responseJson.data);
-            Actions.profile();
+            Actions.dashboard();
         }
         else{
           Alert.alert(JSON.stringify(responseJson.msg));
