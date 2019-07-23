@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Alert, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
 export default class Profile extends Component {
@@ -17,6 +18,13 @@ export default class Profile extends Component {
 
     }
 
+    destroySession = async () => {
+      await AsyncStorage.removeItem('userData');
+      // this.setState({
+      //   isLogged: false,
+      //   });
+    }
+
     render() {
         return (
          <Container>
@@ -25,7 +33,7 @@ export default class Profile extends Component {
              <Icon onPress={() => this.props.navigation.openDrawer()} name="md-menu" style={{ color: '#d3a04c', marginRight: 15 }} />
            </Left>
            <Right>
-             <Button><Text>Log Out</Text></Button>
+             <Button onPress={() => this.destroySession()} ><Text>Log Out</Text></Button>
            </Right>
           </Header>
           <Content>
