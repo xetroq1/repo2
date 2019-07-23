@@ -16,8 +16,10 @@ import RegisterView from './src/components/RegisterView';
 import Dashboard from './src/components/Dashboard';
 import Profile from './src/components/Profile';
 import Routes from './src/components/Routes';
+// import MySession from './src/components/common/MySession';
+import AsyncStorage from '@react-native-community/async-storage';
 import companyLogosm from './src/assets/images/main_logo-sm.png';
-import { createDrawerNavigator,createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation'
+import { createDrawerNavigator,createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -43,28 +45,93 @@ const DrawerContent = (props) => (
 );
 
 const MyDrawerNavigator = createDrawerNavigator({
-    Dashboard:{
-        screen: Dashboard,
-    },
-    Profile: {
-        screen: Profile,
-    },
-},
-{
+  Dashboard:{
+    screen: Dashboard,
+  },
+  Profile: {
+    screen: Profile,
+  },
+  },
+  {
     contentComponent: DrawerContent,
-}
+  }
 );
 
 const MyApp = createAppContainer(MyDrawerNavigator);
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+        isLoading: true,
+        isLogged: false,
+      }
+  }
+
+  componentDidMount() {
+    this.checkSession();
+  }
+
+  checkSession = async () => {
+    if(await AsyncStorage.getItem('userId')){
+      this.setState({
+        isLogged: true,
+        });
+    }
+    setTimeout(() => {
+      this.setState({
+        isLoading: false,
+        });
+      }, 1000);
+  }
+
+  destroySession = async () => {
+    await AsyncStorage.removeItem('userId');
+    this.setState({
+      isLogged: false,
+      });
+  }
+
+  createSession = async () => {
+    await AsyncStorage.setItem('userId', true);
+    this.setState({
+      isLogged: true,
+      });
+  }
+
+
   render() {
-    return (
+    const { isLogged, isLoading } = this.state;
+
+    if(isLoading){
+      return (
+          <View>
+            <Text>
+              Loading
+            </Text>
+          </View>
+        );
+    }
+
+    if(isLogged === false){
+        console.log('not logged');
+        this.createSession();
+      return (
+        <StyleProvider style={getTheme(material)}>
+            <Routes />
+        </StyleProvider>
+      );
+    }else{
+      console.log('logged');
+
+      return (
         <StyleProvider style={getTheme(material)}>
             <MyApp />
         </StyleProvider>
-    );
+      );
+    }
   }
 }
 

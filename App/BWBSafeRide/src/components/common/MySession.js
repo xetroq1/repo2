@@ -3,9 +3,9 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export default class MySession extends Component {
 
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   // componentDidMount(){
   //    this.getData();
@@ -30,15 +30,20 @@ export default class MySession extends Component {
   }
 
   get = async (name) => {
+    // return "APPLE";
     try {
       if (await AsyncStorage.getItem(name) == null) {
-        return false;
+        // await AsyncStorage.setItem(name, 'asddd');
+        // console.log('session if');
+        return "false";
       }else {
-        return await AsyncStorage.getItem(name);;
+        // console.log('session else');
+        // console.log(await AsyncStorage.getItem(name));
+        return await AsyncStorage.getItem(name);
       }
     } catch (e) {
       // console.log('err XXX');
-      return false;
+      return "false";
     }
   }
 
