@@ -27,6 +27,13 @@ export default class Profile extends Component {
     }
   }
 
+    destroySession = async () => {
+      await AsyncStorage.removeItem('userData');
+      // this.setState({
+      //   isLogged: false,
+      //   });
+    }
+
     render() {
         const { userData } = this.state;
         // console.log(userData);
@@ -38,7 +45,7 @@ export default class Profile extends Component {
              <Icon onPress={() => this.props.navigation.openDrawer()} name="md-menu" style={{ color: '#d3a04c', marginRight: 15 }} />
            </Left>
            <Right>
-             <Button><Text>Log Out</Text></Button>
+             <Button onPress={() => this.destroySession()} ><Text>Log Out</Text></Button>
            </Right>
           </Header>
           <Content>
