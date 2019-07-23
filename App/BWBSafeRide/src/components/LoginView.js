@@ -62,6 +62,7 @@ export default class LoginView extends Component {
 
        if(responseJson.response === 'success')
         {
+
             this.setData(responseJson.data);
             Actions.dashboard();
         }
@@ -76,8 +77,17 @@ export default class LoginView extends Component {
     }
   }
 
+  // createSession = async () => {
+  //   await AsyncStorage.setItem('userId', true);
+  //
+  //   this.setState({
+  //     isLogged: true,
+  //     });
+  // }
+
   async setData(responseJson) {
     try {
+
        await AsyncStorage.setItem('userData', JSON.stringify(responseJson));
     } catch (error) {
       console.log("Something went wrong", error);
