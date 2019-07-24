@@ -5,7 +5,6 @@ import { createDrawerNavigator,createAppContainer } from 'react-navigation';
 
 import LoginView from './LoginView';
 import RegisterView from './RegisterView';
-import Profile from './Profile';
 import Dashboard from './Dashboard';
 import SideBarMenu from './SideBarMenu';
 

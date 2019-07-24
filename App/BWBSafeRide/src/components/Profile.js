@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Alert, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import {Actions} from 'react-native-router-flux';
+import { Alert, View, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight } from 'react-native';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Item, ListItem, List, Input, Label } from 'native-base';
 export default class Profile extends Component {
     static navigationOptions = {
         drawerLabel: 'Profile',
@@ -11,23 +13,60 @@ export default class Profile extends Component {
     };
 
     state = {
-        data: []
+        userData: [],
+        modalVisible: false
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
     }
 
     componentDidMount(){
-
+        this.setUserData();
     }
+
+  setUserData = async () => {
+    if(await AsyncStorage.getItem('userData')){
+        const data = JSON.parse(await AsyncStorage.getItem('userData'));
+      this.setState({ userData: data });
+    }
+  }
 
     destroySession = async () => {
       await AsyncStorage.removeItem('userData');
-      // this.setState({
-      //   isLogged: false,
-      //   });
+      // PAGE REDIRECTION HERE
     }
 
     render() {
         return (
-         <Container>
+        <Container>
+             <Modal
+             animationType="slide"
+             transparent={false}
+             visible={this.state.modalVisible}
+             >
+                 <View style={styles.modal}>
+                     <View style={{color: '#d3a04c'}}>
+                         <Text>Update Profile</Text>
+                     </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput style={styles.inputBox2} placeholder="First Name" />
+                        <TextInput style={styles.inputBox2} placeholder="Last Name" />
+                    </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput style={styles.inputBox2} placeholder="Email" keyboardType="email-address" />
+                        <TextInput style={styles.inputBox2} placeholder="Phone Number" keyboardType="phone-pad" />
+                    </View>
+                    <TextInput style={styles.inputBox} placeholder="City" />
+                    <TextInput style={styles.inputBox} placeholder="ZIP Code" keyboardType="number-pad" />
+                    <TouchableOpacity style={styles.buttonContainer}>
+                        <Text style={styles.buttonText}>Update</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity style={styles.buttonContainer} onPress={() => { this.setModalVisible(!this.state.modalVisible); }}>
+                         <Text style={styles.buttonText}>Close</Text>
+                     </TouchableOpacity>
+                 </View>
+             </Modal>
           <Header>
            <Left style={{ flexDirection: 'row' }}>
              <Icon onPress={() => this.props.navigation.openDrawer()} name="md-menu" style={{ color: '#d3a04c', marginRight: 15 }} />
@@ -41,11 +80,19 @@ export default class Profile extends Component {
            <Image style={styles.avatar} source={require('../assets/images/avatar.png')}/>
            <View style={styles.body}>
              <View style={styles.bodyContent}>
-               <Text style={styles.name}>John Doe</Text>
-               <Text style={styles.info}>UX Designer / Mobile developer</Text>
-               <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
-
-               <TouchableOpacity style={styles.buttonContainer}>
+               <Text style={styles.name}>{this.state.userData.first_name} {this.state.userData.last_name}</Text>
+               <Text style={styles.info}>{this.state.userData.username}</Text>
+               <List>
+                <ListItem>
+                    <Text style={styles.description}>Email Address:  </Text>
+                    <Text style={styles.description}>{this.state.userData.email}</Text>
+                </ListItem>
+                <ListItem>
+                  <Text style={styles.description}>Contact Number:  </Text>
+                  <Text style={styles.description}>{this.state.userData.contact_number}</Text>
+                </ListItem>
+              </List>
+               <TouchableOpacity style={styles.buttonContainer} onPress={() => { this.setModalVisible(true); }}>
                  <Text style={styles.buttonText}>Update Profile</Text>
                </TouchableOpacity>
              </View>
@@ -89,11 +136,6 @@ const styles = StyleSheet.create({
     marginTop:130,
     backgroundColor: "white"
   },
-  name:{
-    fontSize:22,
-    color:"#FFFFFF",
-    fontWeight:'600',
-  },
   body:{
     marginTop:40,
   },
@@ -105,7 +147,8 @@ const styles = StyleSheet.create({
   name:{
     fontSize:28,
     color: "#696969",
-    fontWeight: "600"
+    fontWeight: "600",
+    textTransform: 'capitalize'
   },
   info:{
     fontSize:16,
@@ -113,10 +156,8 @@ const styles = StyleSheet.create({
     marginTop:10
   },
   description:{
-    fontSize:16,
-    color: "#696969",
-    marginTop:10,
-    textAlign: 'center'
+    fontSize:14,
+    color: "#696969"
   },
   buttonContainer: {
     marginTop:10,
@@ -131,5 +172,36 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff'
-  }
+},
+modal: {
+    marginTop: 20,
+    backgroundColor: 'white',
+   alignSelf: 'center',
+   alignItems: 'center'
+},
+inputWrap: {
+    flexDirection: 'row'
+},
+inputBox: {
+    width: 300,
+    backgroundColor: '#eeeeee',
+    borderRadius: 2,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: '#002f6c',
+    marginVertical: 10,
+    paddingVertical: 8
+},
+inputBox2: {
+    width: 145,
+    backgroundColor: '#eeeeee',
+    borderRadius: 2,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: '#002f6c',
+    marginVertical: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingVertical: 8
+}
 });

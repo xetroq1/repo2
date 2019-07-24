@@ -22,6 +22,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import companyLogosm from './src/assets/images/main_logo-sm.png';
 import { createDrawerNavigator,createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation';
 
+var Spinner = require('react-native-spinkit');
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
   android:
@@ -83,10 +85,8 @@ export default class App extends Component<Props> {
 
   if(isLoading){
     return (
-        <View>
-          <Text>
-            Loading
-          </Text>
+        <View style={styles.container}>
+        <Spinner type="9CubeGrid" color="#d3a04c" />
         </View>
       );
   }
@@ -125,23 +125,19 @@ export default class App extends Component<Props> {
 
     if(isLoading){
       return (
-          <View>
-            <Text>
-              Loading
-            </Text>
+          <View style={styles.container}>
+           <Spinner type="9CubeGrid" color="#d3a04c" />
           </View>
         );
     }
 
     if(isLogged === false){
-        console.log('not logged');
       return (
         <StyleProvider style={getTheme(material)}>
             <Routes />
         </StyleProvider>
       );
     }else{
-      console.log('logged');
 
       return (
         <StyleProvider style={getTheme(material)}>
