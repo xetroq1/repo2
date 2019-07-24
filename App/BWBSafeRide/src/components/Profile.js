@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { TextInput } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Actions} from 'react-native-router-flux';
 import { Alert, View, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem, List } from 'native-base';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, Item, ListItem, List, Input, Label } from 'native-base';
 export default class Profile extends Component {
     static navigationOptions = {
         drawerLabel: 'Profile',
@@ -45,11 +46,23 @@ export default class Profile extends Component {
              visible={this.state.modalVisible}
              >
                  <View style={styles.modal}>
-                    <Text>Modal content goes here...</Text>
-                     <TouchableOpacity
-                     onPress={() => {
-                     this.setModalVisible(!this.state.modalVisible);
-                     }} style={styles.buttonContainer}>
+                     <View style={{color: '#d3a04c'}}>
+                         <Text>Update Profile</Text>
+                     </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput style={styles.inputBox2} placeholder="First Name" />
+                        <TextInput style={styles.inputBox2} placeholder="Last Name" />
+                    </View>
+                    <View style={styles.inputWrap}>
+                        <TextInput style={styles.inputBox2} placeholder="Email" keyboardType="email-address" />
+                        <TextInput style={styles.inputBox2} placeholder="Phone Number" keyboardType="phone-pad" />
+                    </View>
+                    <TextInput style={styles.inputBox} placeholder="City" />
+                    <TextInput style={styles.inputBox} placeholder="ZIP Code" keyboardType="number-pad" />
+                    <TouchableOpacity style={styles.buttonContainer}>
+                        <Text style={styles.buttonText}>Update</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity style={styles.buttonContainer} onPress={() => { this.setModalVisible(!this.state.modalVisible); }}>
                          <Text style={styles.buttonText}>Close</Text>
                      </TouchableOpacity>
                  </View>
@@ -165,5 +178,30 @@ modal: {
     backgroundColor: 'white',
    alignSelf: 'center',
    alignItems: 'center'
+},
+inputWrap: {
+    flexDirection: 'row'
+},
+inputBox: {
+    width: 300,
+    backgroundColor: '#eeeeee',
+    borderRadius: 2,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: '#002f6c',
+    marginVertical: 10,
+    paddingVertical: 8
+},
+inputBox2: {
+    width: 145,
+    backgroundColor: '#eeeeee',
+    borderRadius: 2,
+    paddingHorizontal: 16,
+    fontSize: 14,
+    color: '#002f6c',
+    marginVertical: 10,
+    marginLeft: 5,
+    marginRight: 5,
+    paddingVertical: 8
 }
 });

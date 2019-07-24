@@ -132,14 +132,12 @@ export default class App extends Component<Props> {
     }
 
     if(isLogged === false){
-        console.log('not logged');
       return (
         <StyleProvider style={getTheme(material)}>
             <Routes />
         </StyleProvider>
       );
     }else{
-      console.log('logged');
 
       return (
         <StyleProvider style={getTheme(material)}>
