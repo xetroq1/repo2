@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import {Actions} from 'react-native-router-flux';
-import { Alert, View, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import { Alert, View, StyleSheet, Image, TouchableOpacity, Modal, TouchableHighlight } from 'react-native';
+import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text, ListItem, List } from 'native-base';
 export default class Profile extends Component {
     static navigationOptions = {
         drawerLabel: 'Profile',
@@ -12,7 +12,12 @@ export default class Profile extends Component {
     };
 
     state = {
-        userData: []
+        userData: [],
+        modalVisible: false
+    }
+
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
     }
 
     componentDidMount(){
@@ -33,7 +38,22 @@ export default class Profile extends Component {
 
     render() {
         return (
-         <Container>
+        <Container>
+             <Modal
+             animationType="slide"
+             transparent={false}
+             visible={this.state.modalVisible}
+             >
+                 <View style={styles.modal}>
+                    <Text>Modal content goes here...</Text>
+                     <TouchableOpacity
+                     onPress={() => {
+                     this.setModalVisible(!this.state.modalVisible);
+                     }} style={styles.buttonContainer}>
+                         <Text style={styles.buttonText}>Close</Text>
+                     </TouchableOpacity>
+                 </View>
+             </Modal>
           <Header>
            <Left style={{ flexDirection: 'row' }}>
              <Icon onPress={() => this.props.navigation.openDrawer()} name="md-menu" style={{ color: '#d3a04c', marginRight: 15 }} />
@@ -49,9 +69,17 @@ export default class Profile extends Component {
              <View style={styles.bodyContent}>
                <Text style={styles.name}>{this.state.userData.first_name} {this.state.userData.last_name}</Text>
                <Text style={styles.info}>{this.state.userData.username}</Text>
-               <Text style={styles.description}>Lorem ipsum dolor sit amet, saepe sapientem eu nam. Qui ne assum electram expetendis, omittam deseruisse consequuntur ius an,</Text>
-
-               <TouchableOpacity style={styles.buttonContainer}>
+               <List>
+                <ListItem>
+                    <Text style={styles.description}>Email Address:  </Text>
+                    <Text style={styles.description}>{this.state.userData.email}</Text>
+                </ListItem>
+                <ListItem>
+                  <Text style={styles.description}>Contact Number:  </Text>
+                  <Text style={styles.description}>{this.state.userData.contact_number}</Text>
+                </ListItem>
+              </List>
+               <TouchableOpacity style={styles.buttonContainer} onPress={() => { this.setModalVisible(true); }}>
                  <Text style={styles.buttonText}>Update Profile</Text>
                </TouchableOpacity>
              </View>
@@ -115,10 +143,8 @@ const styles = StyleSheet.create({
     marginTop:10
   },
   description:{
-    fontSize:16,
-    color: "#696969",
-    marginTop:10,
-    textAlign: 'center'
+    fontSize:14,
+    color: "#696969"
   },
   buttonContainer: {
     marginTop:10,
@@ -133,5 +159,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff'
-  }
+},
+modal: {
+    marginTop: 20,
+    backgroundColor: 'white',
+   alignSelf: 'center',
+   alignItems: 'center'
+}
 });
