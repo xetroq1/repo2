@@ -48,22 +48,22 @@ const DrawerContent = (props) => (
 );
 
 const MyDrawerNavigator = createDrawerNavigator({
-    Dashboard:{
-        screen: Dashboard,
+      Dashboard:{
+          screen: Dashboard,
+      },
+      Profile: {
+          screen: Profile,
+      },
+      History: {
+          screen: History,
+      },
+      Payment: {
+          screen: Payment,
+      }
     },
-    Profile: {
-        screen: Profile,
-    },
-    History: {
-        screen: History,
-    },
-    Payment: {
-        screen: Payment,
+    {
+        contentComponent: DrawerContent,
     }
-},
-{
-    contentComponent: DrawerContent,
-}
 );
 
 const MyApp = createAppContainer(MyDrawerNavigator);
