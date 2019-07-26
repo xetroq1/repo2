@@ -76,15 +76,14 @@ export default class Form extends ValidationComponent {
 
           }).then((response) => response.json())
             .then((responseJson) => {
-
+              console.log(responseJson);
+              console.log('came dito');
              if(responseJson.response === 'success')
               {
                   Alert.alert('Successfully registered.');
-                  this.login();
-
-              }
-              else{
-
+                  // this.login();
+                  this.props.navigation.navigate('Logout');
+              }else {
                 Alert.alert(JSON.stringify(responseJson.msg));
               }
 

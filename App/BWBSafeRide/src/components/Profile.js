@@ -44,6 +44,14 @@ export default class Profile extends ValidationComponent {
             });
           }, 1000);
     }
+
+// <<<<<<< HEAD
+//     setUserData = async () => {
+//       if(await AsyncStorage.getItem('userData')){
+//           const data = JSON.parse(await AsyncStorage.getItem('userData'));
+//         this.setState({ userData: data });
+//       }
+// =======
     updateSubmit(){
         this.validate({
           first_name: {required: true},
@@ -86,46 +94,43 @@ export default class Profile extends ValidationComponent {
         }
 
   setUserData = async (e) => {
-    if(await AsyncStorage.getItem('userData')){
-        const data = JSON.parse(await AsyncStorage.getItem('userData'));
-
-        fetch(Helpers.api_url+'get_profile', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-
-        user_id: data.user_id
-     })
-
-    }).then((response) => response.json())
-      .then((responseJson) => {
-
-       if(responseJson.response === 'success')
-        {
-            this.setState({ userData: responseJson.data });
-            this.setState({ first_name: responseJson.data.first_name });
-            this.setState({ last_name: responseJson.data.last_name });
-            this.setState({ email: responseJson.data.email });
-            this.setState({ contact_number: responseJson.data.contact_number });
-            this.setState({ city: responseJson.data.city });
-            this.setState({ zip_code: responseJson.data.zip_code });
-            this.setState({ user_id: responseJson.data.user_id });
-
-        }
-
-      }).catch((error) => {
-        console.error(error);
-      });
-    }
-
-    setUserData = async () => {
       if(await AsyncStorage.getItem('userData')){
           const data = JSON.parse(await AsyncStorage.getItem('userData'));
-        this.setState({ userData: data });
+
+          fetch(Helpers.api_url+'get_profile', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+
+          user_id: data.user_id
+       })
+
+      }).then((response) => response.json())
+        .then((responseJson) => {
+
+         if(responseJson.response === 'success')
+          {
+              this.setState({ userData: responseJson.data });
+              this.setState({ first_name: responseJson.data.first_name });
+              this.setState({ last_name: responseJson.data.last_name });
+              this.setState({ email: responseJson.data.email });
+              this.setState({ contact_number: responseJson.data.contact_number });
+              this.setState({ city: responseJson.data.city });
+              this.setState({ zip_code: responseJson.data.zip_code });
+              this.setState({ user_id: responseJson.data.user_id });
+
+          }
+
+        }).catch((error) => {
+          console.error(error);
+        });
+  // >>>>>>> 2023b29d881665e4dc67ab7a58958d218ea3c9ad
+      }
     }
+
     destroySession = async () => {
       await AsyncStorage.removeItem('userData');
       this.props.navigation.navigate('Logout');

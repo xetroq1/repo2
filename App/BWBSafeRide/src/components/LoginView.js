@@ -14,7 +14,6 @@ import {
 import {Actions} from 'react-native-router-flux';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
-import Helpers from '../../Helpers';
 
 import usernameIcon from '../assets/images/icons8-username-filled-50.png';
 import passwordIcon from '../assets/images/icons8-lock-filled-50.png';
@@ -45,7 +44,7 @@ export default class LoginView extends Component {
     {/*Alert.alert("Alert", "Button pressed: "+viewId);*/}
 
     if(viewId == "LoginSubmit"){
-        fetch(Helpers.api_url+'login', {
+        fetch('http://web2.proweaverlinks.com/tech/bwbsafe/backend_web_api/api/login', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -108,8 +107,6 @@ export default class LoginView extends Component {
   }
 
   render() {
-    console.log('login im');
-    console.log(this.props.navigation);
     return (
       <ImageBackground style={styles.container} source={backgroundImg}>
         <Image style={styles.compLogo} source={companyLogo} accessibilityLabel="company logo" />

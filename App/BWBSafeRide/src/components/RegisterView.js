@@ -25,7 +25,7 @@ export default class RegisterView extends Component {
                 <ImageBackground style={styles.container} source={backgroundImg}>
                     <Text>{'\n'}</Text>
                     <Text style={{color: '#fff'}}>{'Intro text goes here...'}</Text>
-                    <Form type="Register" />
+                    <Form {...this.props} type="Register" />
                     <View style={styles.signupTextCont}>
                         <Text style={styles.signupText}>Already have an account? </Text>
                         <TouchableOpacity onPress={this.goBack}><Text style={styles.signupButton}>Sign in</Text></TouchableOpacity>
