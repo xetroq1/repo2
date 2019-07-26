@@ -6,6 +6,7 @@ import { SegmentedControls } from 'react-native-radio-buttons';
 import ValidationComponent from 'react-native-form-validator';
 import Storage from 'react-native-storage';
 import AsyncStorage from '@react-native-community/async-storage';
+import Helpers from '../../Helpers';
 
 export default class Form extends ValidationComponent {
 
@@ -52,7 +53,7 @@ export default class Form extends ValidationComponent {
 
       if(viewId == "RegisterSubmit"){
           if(this.isFormValid()){
-              fetch('http://web2.proweaverlinks.com/tech/bwbsafe/backend_web_api/api/register', {
+              fetch(Helpers.api_url+'register', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
