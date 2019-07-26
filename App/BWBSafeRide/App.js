@@ -20,7 +20,7 @@ import Payment from './src/components/Payment';
 import Routes from './src/components/Routes';
 import AsyncStorage from '@react-native-community/async-storage';
 import companyLogosm from './src/assets/images/main_logo-sm.png';
-import { createDrawerNavigator,createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation';
+import { createDrawerNavigator, createAppContainer, DrawerItems, DrawerNavigation } from 'react-navigation';
 
 var Spinner = require('react-native-spinkit');
 
@@ -31,6 +31,11 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+const destroySession = async () => {
+  await AsyncStorage.removeItem('userData');
+  // Actions.dashboard();
+  // PAGE REDIRECTION HERE
+}
 const DrawerContent = (props) => (
   <View>
     <View
@@ -49,26 +54,44 @@ const DrawerContent = (props) => (
 
 const MyDrawerNavigator = createDrawerNavigator({
       Dashboard:{
-          screen: Dashboard,
+        screen: Dashboard,
       },
       Profile: {
-          screen: Profile,
+        screen: Profile,
       },
       History: {
-          screen: History,
+        screen: History,
       },
       Payment: {
-          screen: Payment,
+        screen: Payment,
+      },
+      Logout: {
+        screen: Routes,
+        navigationOptions: ({navigation}) => {
+            return {
+                drawerLabel: () => null,
+            }
+        }
+        // screen: () => {
+        //   AsyncStorage.removeItem('userData');
+        //   return <Routes />;
+        //   },
+        // navigationOptions: ({navigation}) => {
+        //     return {
+        //         drawerLabel: () => null,
+        //     }
+        // }
       }
     },
     {
-        contentComponent: DrawerContent,
+      contentComponent: DrawerContent,
     }
 );
 
 const MyApp = createAppContainer(MyDrawerNavigator);
 
 type Props = {};
+
 export default class App extends Component<Props> {
 
   constructor(props) {
@@ -86,11 +109,10 @@ export default class App extends Component<Props> {
   if(isLoading){
     return (
         <View style={styles.container}>
-        <Spinner type="9CubeGrid" color="#d3a04c" />
+          <Spinner type="9CubeGrid" color="#d3a04c" />
         </View>
       );
   }
-
 
   checkSession = async () => {
     if(await AsyncStorage.getItem('userData')){
@@ -125,26 +147,26 @@ export default class App extends Component<Props> {
 
     if(isLoading){
       return (
-          <View style={styles.container}>
-           <Spinner type="9CubeGrid" color="#d3a04c" />
-          </View>
+        <View style={styles.container}>
+          <Spinner type="9CubeGrid" color="#d3a04c" />
+        </View>
         );
     }
 
-    if(isLogged === false){
+    // if(isLogged === false){
+      // return (
+      //   <StyleProvider style={getTheme(material)}>
+      //     <Routes />
+      //   </StyleProvider>
+      // );
+    // }else{
+    //
       return (
         <StyleProvider style={getTheme(material)}>
-            <Routes />
+          <MyApp />
         </StyleProvider>
       );
-    }else{
-
-      return (
-        <StyleProvider style={getTheme(material)}>
-            <MyApp />
-        </StyleProvider>
-      );
-    }
+    // }
   }
 }
 

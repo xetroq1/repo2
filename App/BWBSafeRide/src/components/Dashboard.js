@@ -1,18 +1,39 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-native';
 import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Dashboard extends Component {
     static navigationOptions = {
-    drawerLabel: 'Dashboard',
-    drawerIcon: () => (
-        <Icon type="FontAwesome" name="home" style={{ fontSize: 22 }} />
-    )
+      drawerLabel: 'Dashboard',
+      drawerIcon: () => (
+          <Icon type="FontAwesome" name="home" style={{ fontSize: 22 }} />
+      )
 
-  };
+    };
+
+    checkSession = async () => {
+      console.log('here');
+      if(await AsyncStorage.getItem('userData')){
+        // this.setState({
+        //   isLogged: true,
+        //   });
+        console.log('naa');
+        console.log(await AsyncStorage.getItem('userData'));
+      }else{
+          this.props.navigation.navigate('Logout');
+      }
+      // setTimeout(() => {
+      //   this.setState({
+      //     isLoading: false,
+      //     });
+      //   }, 1000);
+    }
 
     render() {
-      console.log(this.props);
+      console.log("calling");
+      this.checkSession();
+
         return (
             <Container>
             <Header>
@@ -23,9 +44,9 @@ export default class Dashboard extends Component {
              </Right>
             </Header>
                 <Content>
-                    <Text>
+                  <Text>
                     Dashboard/Home Screen content goes here ...
-                    </Text>
+                  </Text>
                 </Content>
                 <Footer>
                     <FooterTab style={{backgroundColor:"#1c1b22"}}>

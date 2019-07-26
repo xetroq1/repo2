@@ -25,15 +25,17 @@ export default class Profile extends Component {
         this.setUserData();
     }
 
-  setUserData = async () => {
-    if(await AsyncStorage.getItem('userData')){
-        const data = JSON.parse(await AsyncStorage.getItem('userData'));
-      this.setState({ userData: data });
+    setUserData = async () => {
+      if(await AsyncStorage.getItem('userData')){
+          const data = JSON.parse(await AsyncStorage.getItem('userData'));
+        this.setState({ userData: data });
+      }
     }
-  }
 
     destroySession = async () => {
       await AsyncStorage.removeItem('userData');
+      this.props.navigation.navigate('Logout');
+      // Actions.dashboard();
       // PAGE REDIRECTION HERE
     }
 

@@ -56,15 +56,15 @@ export default class LoginView extends Component {
         password: password
 
       })
-
     }).then((response) => response.json())
       .then((responseJson) => {
 
        if(responseJson.response === 'success')
         {
-
             this.setData(responseJson.data);
-            Actions.dashboard();
+            console.log('came');
+            // Actions.dashboard();
+            this.props.navigation.navigate('Dashboard');
         }
         else{
           Alert.alert(JSON.stringify(responseJson.msg));
@@ -107,6 +107,8 @@ export default class LoginView extends Component {
   }
 
   render() {
+    console.log('login im');
+    console.log(this.props.navigation);
     return (
       <ImageBackground style={styles.container} source={backgroundImg}>
         <Image style={styles.compLogo} source={companyLogo} accessibilityLabel="company logo" />
